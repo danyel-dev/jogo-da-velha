@@ -5,7 +5,7 @@ namespace jogoDaVelha
 {
     class Program
     {
-        static void printGame(int ordemMatriz, char[,] mat)
+        static void printGame(int ordemMatriz, string[,] mat)
         {
             int qtdCaractere = ordemMatriz * 4;
             var texto = "";
@@ -26,11 +26,14 @@ namespace jogoDaVelha
             {
                 for (int j = 0; j < ordemMatriz; j++)
                 {
+                    if(mat[i, j] == "X")
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                    else if(mat[i, j] == "O")
+                        Console.ForegroundColor = ConsoleColor.Red;
 
-                    if (mat[i, j] == 'X' || mat[i, j] == 'O')
-                        Console.Write($" {mat[i, j]} ");
-                    else
-                        Console.Write(" - ");
+                    Console.Write($" {mat[i, j]} ");
+
+                    Console.ResetColor();
 
                     if (j != ordemMatriz - 1)
                     {
@@ -48,7 +51,7 @@ namespace jogoDaVelha
         }
 
 
-        static bool verificarLinha(char[,] mat, int linha, int ordemMatriz, char caractere)
+        static bool verificarLinha(string[,] mat, int linha, int ordemMatriz, string caractere)
         {
             int cont = 0;
 
@@ -64,7 +67,7 @@ namespace jogoDaVelha
             return false;
         }
 
-        static bool verificarColuna(char[,] mat, int coluna, int ordemMatriz, char caractere)
+        static bool verificarColuna(string[,] mat, int coluna, int ordemMatriz, string caractere)
         {
             int cont = 0;
 
@@ -80,7 +83,7 @@ namespace jogoDaVelha
             return false;
         }
 
-        static bool verificarDiagonalPrincipal(char[,] mat, int ordemMatriz, char caractere)
+        static bool verificarDiagonalPrincipal(string[,] mat, int ordemMatriz, string caractere)
         {
             int cont = 0;
 
@@ -96,7 +99,7 @@ namespace jogoDaVelha
             return false;
         }
 
-        static bool verificarDiagonalSecundaria(char[,] mat, int ordemMatriz, char caractere)
+        static bool verificarDiagonalSecundaria(string[,] mat, int ordemMatriz, string caractere)
         {
             int cont = 0;
             int coluna = ordemMatriz - 1;
@@ -146,6 +149,20 @@ namespace jogoDaVelha
             posicao[1] = coluna;
         }
 
+        static void preencherMatriz(string[,] mat, int ordemMatriz)
+        {
+            int cont = 1;
+            
+            for(int i = 0; i < ordemMatriz; i++)
+            {
+                for(int j = 0; j < ordemMatriz; j++)
+                {
+                    mat[i, j] = $"{cont}";
+                    cont++;
+                }
+            }
+        }
+
         static void Main()
         {
             int vitoriasPlayer1 = 0, vitoriasPlayer2 = 0, empates = 0, op;
@@ -158,23 +175,25 @@ namespace jogoDaVelha
                 int ordemMatriz = int.Parse(Console.ReadLine());
 
                 Console.WriteLine();
-                char[,] mat = new char[ordemMatriz, ordemMatriz];
+                string[,] mat = new string[ordemMatriz, ordemMatriz];
+
+                preencherMatriz(mat, ordemMatriz);
 
                 Console.WriteLine("Player 01 começa com 'X'");
                 Console.WriteLine("Player 01 começa com 'O'");
                 Console.Write("\nInforme o caractere do primeiro jogador: ");
 
-                char option = char.Parse(Console.ReadLine());
+                string option = Console.ReadLine();
 
-                char player1 = option;
-                char player2;
+                string player1 = option;
+                string player2;
 
-                if (player1 == 'X')
-                    player2 = 'O';
+                if (player1 == "X")
+                    player2 = "O";
                 else
-                    player2 = 'X';
+                    player2 = "X";
 
-                char caractere = ' ';
+                string caractere = " ";
 
                 for (int i = 0; i < ordemMatriz * ordemMatriz; i++)
                 {
@@ -198,7 +217,7 @@ namespace jogoDaVelha
                     Console.WriteLine();
 
                     int[] vet = new int[2];
-                    
+
                     posicaoMatriz(ordemMatriz, vet);
 
                     int linha = vet[0];
