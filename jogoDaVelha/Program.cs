@@ -115,6 +115,37 @@ namespace jogoDaVelha
             return false;
         }
 
+        static void posicaoMatriz(int ordemMatriz, int[] posicao)
+        {
+            Console.Write("Informe a posição que deseja jogar: ");
+            int pos = int.Parse(Console.ReadLine());
+
+            int linha, coluna;
+
+            if (pos <= ordemMatriz)
+            {
+                linha = 0; coluna = pos - 1;
+            }
+            else if (pos == ordemMatriz * ordemMatriz)
+            {
+                linha = ordemMatriz - 1;
+                coluna = ordemMatriz - 1;
+            }
+            else if (pos % ordemMatriz != 0)
+            {
+                linha = pos / ordemMatriz;
+                coluna = pos % ordemMatriz - 1;
+            }
+            else
+            {
+                linha = pos / ordemMatriz - 1;
+                coluna = ordemMatriz - 1;
+            }
+
+            posicao[0] = linha;
+            posicao[1] = coluna;
+        }
+
         static void Main()
         {
             int vitoriasPlayer1 = 0, vitoriasPlayer2 = 0, empates = 0, op;
@@ -166,11 +197,12 @@ namespace jogoDaVelha
 
                     Console.WriteLine();
 
-                    Console.Write("Informe a posição da linha: ");
-                    int linha = int.Parse(Console.ReadLine());
+                    int[] vet = new int[2];
+                    
+                    posicaoMatriz(ordemMatriz, vet);
 
-                    Console.Write("Informe a posição da coluna: ");
-                    int coluna = int.Parse(Console.ReadLine());
+                    int linha = vet[0];
+                    int coluna = vet[1];
 
                     mat[linha, coluna] = caractere;
 
